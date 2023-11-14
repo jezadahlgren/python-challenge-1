@@ -132,55 +132,76 @@ while ordering:
                     menu_selection_name = menu_items[menu_selection]["Item name"]
                     selected_item_price = menu_items[menu_selection]["Price"]
                     # Ask the customer for the quantity of the menu item
-                    while True: 
-                        Quantity = input("How many would you like?")
-                        
-                        # Check if the quantity is a number, default to 1 if not
-                        if Quantity.isdigit() and int(Quantity) >= 0:
-                            # Add the item name, price, and quantity to the order list
+                    while True:
+                        Quantity = input("How many would you like? ")
+
+                        # Check if the quantity is a number
+                        if Quantity.isdigit():
+                            # Convert the quantity to an integer
+                            Quantity = int(Quantity)
+
+                            # Check if the quantity is a non-negative number
+                            if Quantity >= 0:
+                                # Add the item name, price, and quantity to the order list
+                                place_order.append({
+                                    "Item name": menu_selection_name,
+                                    "Price": selected_item_price,
+                                    "Quantity": Quantity
+                                })
+                                break
+                            else:
+                                # Default to 1 if the quantity is not a non-negative number
+                                print("Quantity must be a non-negative number. Defaulting to 1.")
+                                place_order.append({
+                                    "Item name": menu_selection_name,
+                                    "Price": selected_item_price,
+                                    "Quantity": 1  # Default quantity
+                                })
+                                break
+                        else:
+                            # Default to 1 if the quantity is not a number
+                            print("Please enter a valid quantity. Defaulting to 1.")
                             place_order.append({
                                 "Item name": menu_selection_name,
                                 "Price": selected_item_price,
-                                "Quantity": int(Quantity)
+                                "Quantity": 1  # Default quantity
                             })
-                            break
+                            break 
                         # Tell the customer that their input isn't valid
-                        else:
-                            print("You did not enter a valid quantity. Please enter a number.")
-                else:
-                    # Tell the customer they didn't select a menu option
-                    print(f"{menu_selection} was not a menu option.")
+            else:
+                print("You did not enter a valid quantity. Please enter a number.")
         else:
+                # Tell the customer they didn't select a menu option
+            print(f"{menu_selection} was not a menu option.")
+    else:
             # Tell the customer they didn't select a number
-            print("You didn't select a number.")
+        print("You didn't select a number.")
 
     while True:
         # Ask the customer if they would like to order anything else
         keep_ordering = input("Would you like to keep ordering? (Y)es or (N)o ")
 
-        # 5. Check the customer's input
-        # Keep ordering
-        if keep_ordering.lower() == "y":
-            break
-        # Exit the keep ordering question loop
-        # Complete the order
-        elif keep_ordering.lower() == "n":
+            # Use a match statement to check the customer's input
+        match keep_ordering.lower():
+            case "y":
+                break
+            case "n":
             # Since the customer decided to stop ordering, thank them for
             # their order
-            print("Thank you for your order")
+                print("Thank you for your order")
             # Exit the keep ordering question loop
-            ordering = False
-            break
-        else:
+                ordering = False
+                break
+            case _:
             # Tell the customer to try again
-            print("Please enter either 'Y' or 'N.'")
+                print("Please enter either 'Y' or 'N.'")
 
 
 # Print out the customer's order
 print("This is what we are preparing for you.\n")
 
 # Uncomment the following line to check the structure of the order
-print(place_order)
+#print(place_order)
 
 print("Item name                 | Price  | Quantity")
 print("--------------------------|--------|----------")
@@ -197,19 +218,19 @@ for order in place_order:
     num_item_spaces = 25 - len(item_name)
     item_spaces = " " * num_item_spaces
 
-    num_price_spaces = 6 - len(str(Price))
+    num_price_spaces = 5 - len(str(Price))
     price_spaces = " " * num_price_spaces
 
-    num_quantity_spaces = 6 - len(str(Quantity))
+    num_quantity_spaces = 5 - len(str(Quantity))
     quantity_spaces = " " * num_quantity_spaces
 
     # Print the item name, price, and quantity
     print(f"{item_name}{item_spaces} | ${Price}{price_spaces} | {Quantity}{quantity_spaces}")
-    # Create space strings
-    print("--------------------------|--------|----------")
+# Create space strings
+print("--------------------------|--------|----------")
 
-    # Print the selected items
-    print(f"You selected the following items: {order}")
+# Print the selected items
+print(f"You selected the following items: {order}")
 
 # Calculate the cost of the order using list comprehension
 # Multiply the price by quantity for each item in the order list, then sum()
